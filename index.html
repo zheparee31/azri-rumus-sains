@@ -267,6 +267,31 @@
   .calc-result { color: #f2c875; background: #1b2a29; }
   .calc-result.error { border-color: #895346; color: #ffc4b0; background: #321f20; }
   .empty-state { border-color: #43506a; }
+  .calculator-photo {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    margin: 0 0 17px;
+    padding: 10px 13px;
+    border: 1px solid #d8a54e66;
+    border-radius: 15px;
+    background: linear-gradient(110deg, #1a2638, #171d2b);
+  }
+  .calculator-photo img {
+    width: 64px;
+    height: 64px;
+    flex: 0 0 auto;
+    border: 2px solid #d8a54e;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: center 30%;
+  }
+  .calculator-photo figcaption {
+    color: var(--green-dark);
+    font-size: .75rem;
+    font-weight: 750;
+    line-height: 1.5;
+  }
   @media (max-width: 560px) {
     .hero { grid-template-columns: 1fr; }
     .hero-portrait { width: min(100%, 250px); justify-self: center; transform: none; }
@@ -526,6 +551,10 @@
           <button class="dialog-close" type="button" aria-label="Tutup kalkulator">×</button>
         </div>
         <p class="dialog-description">${item.description}</p>
+        <figure class="calculator-photo">
+          <img src="azri-calculation.png" alt="Foto Azri memberi semangat saat menghitung rumus">
+          <figcaption>Semangat menghitung, Azri! ✨</figcaption>
+        </figure>
         <div class="dialog-equation ${isChemistry ? "chem-equation" : ""}">${item.formula}</div>
         <p class="calc-hint">Isi semua nilai untuk menghitung <strong>${item.answer}</strong>. Pastikan satuannya sesuai.</p>
         <form id="calculatorForm">
