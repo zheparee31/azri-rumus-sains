@@ -1,0 +1,487 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f6f5f1">
+  <meta name="description" content="Ruang belajar rumus fisika dan kimia interaktif untuk Azri.">
+  <title>RumusRuang — Belajar bareng Azri</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f6f5f1;
+      --paper: #fffefa;
+      --ink: #202522;
+      --muted: #737a75;
+      --line: #e8e8df;
+      --green: #47735a;
+      --green-dark: #31523f;
+      --green-soft: #e8f0e7;
+      --violet: #7564a9;
+      --violet-soft: #efebf8;
+      --yellow: #efc765;
+      --shadow: 0 18px 50px #253a2c0d;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--ink);
+      background: var(--bg);
+      font-synthesis: none;
+      text-rendering: optimizeLegibility;
+    }
+    * { box-sizing: border-box; }
+    body {
+      min-width: 320px;
+      margin: 0;
+      background:
+        radial-gradient(ellipse at 95% 0%, #e5eddf 0, transparent 28rem),
+        var(--bg);
+    }
+    button, input { font: inherit; }
+    button:focus-visible, a:focus-visible, input:focus-visible {
+      outline: 3px solid var(--violet);
+      outline-offset: 3px;
+    }
+    button { color: inherit; }
+    .shell { width: min(1120px, calc(100% - 40px)); margin: 0 auto; }
+    .topbar {
+      display: flex;
+      min-height: 76px;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--line);
+    }
+    .brand { display: inline-flex; align-items: center; gap: 11px; font-size: .91rem; font-weight: 850; letter-spacing: -.035em; }
+    .brand-mark { display: grid; width: 36px; height: 36px; place-items: center; border-radius: 12px; color: white; background: var(--green); font-size: 1.15rem; }
+    .brand span:last-child { color: var(--green); }
+    .top-note { color: var(--muted); font-size: .78rem; }
+    .hero { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 25px; padding: 59px 0 43px; }
+    .eyebrow { display: flex; align-items: center; gap: 9px; margin: 0 0 15px; color: var(--green); font-size: .72rem; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; }
+    .eyebrow::before { width: 22px; height: 2px; background: var(--yellow); content: ""; }
+    h1, h2, h3, p { margin-top: 0; }
+    h1 { max-width: 670px; margin-bottom: 15px; font-size: clamp(2.6rem, 6vw, 4.6rem); letter-spacing: -.075em; line-height: .99; }
+    h1 span { color: var(--green); }
+    .hero-copy { max-width: 570px; margin: 0; color: var(--muted); font-size: .99rem; line-height: 1.75; }
+    .hero-sticker { display: grid; width: 152px; height: 152px; align-content: center; justify-items: center; gap: 3px; border: 1px solid #d9e2d5; border-radius: 47% 53% 51% 49% / 47% 44% 56% 53%; color: var(--green-dark); background: #ecf1e8; transform: rotate(7deg); }
+    .hero-sticker strong { font-size: 2rem; letter-spacing: -.08em; }
+    .hero-sticker span { font-size: .67rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
+    .workspace { padding: 25px; border: 1px solid var(--line); border-radius: 25px; background: var(--paper); box-shadow: var(--shadow); }
+    .toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; }
+    .subject-tabs { display: inline-flex; gap: 5px; padding: 5px; border-radius: 14px; background: #f1f1eb; }
+    .subject-tab { min-height: 41px; padding: 0 15px; border: 0; border-radius: 10px; color: var(--muted); background: transparent; cursor: pointer; font-size: .82rem; font-weight: 750; transition: background .18s ease, color .18s ease, box-shadow .18s ease; }
+    .subject-tab[aria-pressed="true"] { color: white; background: var(--green); box-shadow: 0 4px 12px #31523f25; }
+    .subject-tab[data-subject="chemistry"][aria-pressed="true"] { background: var(--violet); }
+    .search-wrap { position: relative; flex: 1; min-width: 210px; }
+    .search-icon { position: absolute; top: 50%; left: 14px; color: #858a81; font-size: 1rem; transform: translateY(-50%); pointer-events: none; }
+    .search { width: 100%; min-height: 46px; padding: 0 15px 0 41px; border: 1px solid var(--line); border-radius: 13px; color: var(--ink); background: #fff; font-size: .85rem; }
+    .filter-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 22px 0 18px; }
+    .filter-label { margin-right: 5px; color: var(--muted); font-size: .75rem; font-weight: 700; }
+    .filter-chip { min-height: 34px; padding: 0 12px; border: 1px solid var(--line); border-radius: 999px; color: #656d66; background: white; cursor: pointer; font-size: .74rem; font-weight: 700; transition: border-color .15s ease, background .15s ease, color .15s ease; }
+    .filter-chip:hover { border-color: #a8bdab; }
+    .filter-chip[aria-pressed="true"] { border-color: #cfddcf; color: var(--green-dark); background: var(--green-soft); }
+    .filter-chip.favorite-filter[aria-pressed="true"] { border-color: #dfd4f2; color: #594a89; background: var(--violet-soft); }
+    .list-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin: 0 0 14px; }
+    .list-heading h2 { margin: 0; font-size: 1rem; letter-spacing: -.02em; }
+    .result-count { color: var(--muted); font-size: .75rem; }
+    .formula-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 13px; }
+    .formula-card { position: relative; min-height: 204px; padding: 18px; border: 1px solid var(--line); border-radius: 17px; background: #fff; cursor: pointer; text-align: left; transition: border-color .18s ease, box-shadow .18s ease, transform .18s ease; }
+    .formula-card:hover { border-color: #c2d2c0; box-shadow: 0 12px 28px #293b2a0d; transform: translateY(-3px); }
+    .chemistry .formula-card:hover { border-color: #d1c6e8; }
+    .card-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+    .topic-tag { padding: 6px 8px; border-radius: 8px; color: var(--green-dark); background: var(--green-soft); font-size: .65rem; font-weight: 800; letter-spacing: .025em; }
+    .chemistry .topic-tag { color: #5e4d88; background: var(--violet-soft); }
+    .favorite-button { display: grid; width: 31px; height: 31px; flex: 0 0 auto; place-items: center; padding: 0; border: 0; border-radius: 9px; color: #a0a59d; background: transparent; cursor: pointer; font-size: 1.1rem; }
+    .favorite-button:hover, .favorite-button[aria-pressed="true"] { color: #c38b2c; background: #fcf4df; }
+    .formula-card h3 { margin: 17px 0 5px; font-size: .98rem; letter-spacing: -.025em; }
+    .card-description { min-height: 35px; margin: 0; color: var(--muted); font-size: .75rem; line-height: 1.5; }
+    .formula-display { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 17px; padding-top: 13px; border-top: 1px dashed var(--line); }
+    .formula-display code { color: var(--green-dark); font-family: "SFMono-Regular", Consolas, monospace; font-size: .95rem; font-weight: 750; }
+    .chemistry .formula-display code { color: #65538f; }
+    .try-label { color: var(--muted); font-size: .68rem; font-weight: 750; }
+    .empty-state { grid-column: 1 / -1; padding: 35px 15px; border: 1px dashed #d7d9cf; border-radius: 16px; color: var(--muted); text-align: center; line-height: 1.7; }
+    .empty-state strong { display: block; margin-bottom: 3px; color: var(--ink); }
+    .bottom-grid { display: grid; grid-template-columns: 1.1fr .9fr; gap: 16px; margin: 19px 0 48px; }
+    .study-card { min-height: 190px; padding: 23px; border: 1px solid var(--line); border-radius: 20px; background: var(--paper); box-shadow: var(--shadow); }
+    .study-card h2 { margin: 0 0 7px; font-size: 1.08rem; letter-spacing: -.035em; }
+    .study-card > p { margin-bottom: 15px; color: var(--muted); font-size: .8rem; line-height: 1.6; }
+    .quiz-kicker { margin-bottom: 8px !important; color: var(--green) !important; font-size: .67rem !important; font-weight: 850; letter-spacing: .12em; text-transform: uppercase; }
+    .quiz-question { min-height: 22px; margin: 12px 0 9px; color: var(--ink); font-size: .87rem; font-weight: 750; line-height: 1.5; }
+    .quiz-options { display: flex; flex-wrap: wrap; gap: 8px; }
+    .quiz-option { min-height: 36px; padding: 0 11px; border: 1px solid var(--line); border-radius: 10px; color: #59615b; background: white; cursor: pointer; font-size: .74rem; font-weight: 700; }
+    .quiz-option:hover:not(:disabled) { border-color: #b6c8b5; color: var(--green-dark); }
+    .quiz-option:disabled { cursor: default; }
+    .quiz-option.correct { border-color: #bdd7bc; color: #315c3b; background: #edf6eb; }
+    .quiz-option.incorrect { border-color: #e4c8be; color: #955245; background: #fbefeb; }
+    .quiz-feedback { min-height: 21px; margin: 9px 0 0 !important; color: var(--green-dark) !important; font-size: .76rem !important; font-weight: 700; }
+    .note-card { display: flex; flex-direction: column; justify-content: space-between; overflow: hidden; border-color: #e4dfef; background: linear-gradient(135deg, #f2eff9, #fffefa 80%); }
+    .note-card .note-icon { display: grid; width: 39px; height: 39px; place-items: center; margin-bottom: 14px; border-radius: 12px; color: #63528d; background: #e6dff2; font-size: 1.1rem; }
+    .note-card h2 { margin-bottom: 7px; }
+    .note-card p { max-width: 360px; margin-bottom: 0; color: #777184; font-size: .8rem; line-height: 1.7; }
+    footer { padding: 0 0 28px; color: var(--muted); font-size: .72rem; text-align: center; }
+    dialog { width: min(500px, calc(100% - 30px)); max-height: min(88vh, 760px); padding: 0; overflow: auto; border: 1px solid var(--line); border-radius: 23px; color: var(--ink); background: var(--paper); box-shadow: 0 25px 90px #111c14; }
+    dialog::backdrop { background: #17221bb5; backdrop-filter: blur(4px); }
+    .dialog-content { padding: 25px; }
+    .dialog-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; }
+    .dialog-top h2 { margin: 12px 0 5px; font-size: 1.5rem; letter-spacing: -.05em; }
+    .dialog-close { display: grid; width: 35px; height: 35px; flex: 0 0 auto; place-items: center; border: 1px solid var(--line); border-radius: 10px; color: var(--muted); background: white; cursor: pointer; font-size: 1.15rem; }
+    .dialog-description { margin: 0 0 18px; color: var(--muted); font-size: .84rem; line-height: 1.65; }
+    .dialog-equation { margin: 0 0 19px; padding: 17px; border-radius: 14px; color: var(--green-dark); background: var(--green-soft); font-family: "SFMono-Regular", Consolas, monospace; font-size: 1.3rem; font-weight: 800; text-align: center; }
+    .chem-equation { color: #5e4d88; background: var(--violet-soft); }
+    .calc-hint { margin: 0 0 12px; color: var(--muted); font-size: .76rem; }
+    .calc-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .calc-field { display: grid; gap: 6px; color: #5d665f; font-size: .74rem; font-weight: 700; }
+    .calc-input { width: 100%; min-height: 43px; padding: 0 11px; border: 1px solid var(--line); border-radius: 11px; color: var(--ink); background: white; font-size: .89rem; }
+    .calc-button { width: 100%; min-height: 46px; margin-top: 16px; border: 0; border-radius: 12px; color: white; background: var(--green); cursor: pointer; font-size: .84rem; font-weight: 800; }
+    .chemistry .calc-button { background: var(--violet); }
+    .calc-button:hover { filter: brightness(.94); }
+    .calc-result { min-height: 52px; margin-top: 13px; padding: 12px 14px; border: 1px solid transparent; border-radius: 12px; color: var(--green-dark); background: #f1f5ee; font-size: .85rem; font-weight: 750; line-height: 1.5; }
+    .calc-result.error { border-color: #efcec6; color: #9b5142; background: #fff4f0; }
+    .calc-result strong { display: block; font-size: 1.08rem; }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; clip-path: inset(50%); border: 0; }
+    @media (max-width: 780px) {
+      .formula-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .hero-sticker { width: 120px; height: 120px; }
+      .bottom-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 560px) {
+      .shell { width: min(100% - 26px, 1120px); }
+      .topbar { min-height: 65px; }
+      .top-note { max-width: 125px; text-align: right; }
+      .hero { grid-template-columns: 1fr; gap: 19px; padding: 43px 0 30px; }
+      .hero-sticker { display: flex; width: auto; height: auto; justify-self: start; gap: 7px; padding: 10px 14px; border-radius: 999px; transform: none; }
+      .hero-sticker strong { font-size: .95rem; letter-spacing: 0; }
+      .hero-sticker span { font-size: .62rem; }
+      .workspace { padding: 15px; border-radius: 20px; }
+      .toolbar { gap: 10px; }
+      .subject-tabs { width: 100%; }
+      .subject-tab { flex: 1; }
+      .search-wrap { min-width: 100%; }
+      .formula-grid { grid-template-columns: 1fr; gap: 10px; }
+      .formula-card { min-height: 174px; }
+      .card-description { min-height: 0; }
+      .calc-fields { grid-template-columns: 1fr; }
+      .dialog-content { padding: 19px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header class="topbar">
+      <div class="brand"><span class="brand-mark" aria-hidden="true">∑</span>rumus<span>ruang</span></div>
+      <div class="top-note">Catatan kecil, rasa ingin tahu besar ✦</div>
+    </header>
+
+    <main>
+      <section class="hero" aria-labelledby="welcome-title">
+        <div>
+          <p class="eyebrow">Laboratorium belajar pribadi</p>
+          <h1 id="welcome-title">Hai, Azri!<br>Yuk bikin rumus jadi <span>seru.</span></h1>
+          <p class="hero-copy">Pilih rumus yang ingin kamu jelajahi, masukkan angka, lalu lihat hasilnya. Fisika dan kimia jadi terasa lebih dekat—satu klik dalam satu waktu.</p>
+        </div>
+        <div class="hero-sticker" aria-label="Belajar santai, paham pelan-pelan">
+          <strong>Azri × sains</strong>
+          <span>Belajar santai ✿</span>
+        </div>
+      </section>
+
+      <section class="workspace" aria-label="Jelajahi kumpulan rumus">
+        <div class="toolbar">
+          <div class="subject-tabs" role="group" aria-label="Pilih mata pelajaran">
+            <button class="subject-tab" data-subject="physics" type="button" aria-pressed="true">⚡ Fisika</button>
+            <button class="subject-tab" data-subject="chemistry" type="button" aria-pressed="false">⚗️ Kimia</button>
+          </div>
+          <label class="search-wrap">
+            <span class="search-icon" aria-hidden="true">⌕</span>
+            <span class="sr-only">Cari rumus</span>
+            <input class="search" id="searchInput" type="search" placeholder="Cari rumus, topik, atau simbol…" autocomplete="off">
+          </label>
+        </div>
+
+        <div class="filter-row" id="filterRow" aria-label="Filter kategori"></div>
+        <div class="list-heading">
+          <h2 id="sectionTitle">Rumus fisika pilihan</h2>
+          <span class="result-count" id="resultCount" aria-live="polite"></span>
+        </div>
+        <div class="formula-grid" id="formulaGrid"></div>
+      </section>
+
+      <section class="bottom-grid" aria-label="Aktivitas belajar">
+        <article class="study-card" id="quizCard">
+          <p class="quiz-kicker">✳ Tantangan kilat</p>
+          <h2>Seberapa nempel rumusnya?</h2>
+          <p>Jawab satu pertanyaan singkat. Siap-siap, Azri!</p>
+          <div id="quizArea">
+            <button class="filter-chip" id="startQuiz" type="button">Mulai kuis →</button>
+          </div>
+        </article>
+        <aside class="study-card note-card">
+          <div>
+            <div class="note-icon" aria-hidden="true">✎</div>
+            <h2>Tip kecil buat Azri</h2>
+            <p>Jangan cuma menghafal simbol—coba masukkan angka dan perhatikan bagaimana setiap besaran saling berhubungan.</p>
+          </div>
+        </aside>
+      </section>
+    </main>
+    <footer>Dibuat khusus untuk Azri · klik kartu rumus untuk mulai menghitung ✨</footer>
+  </div>
+
+  <dialog id="formulaDialog" aria-labelledby="dialogTitle">
+    <div class="dialog-content" id="dialogContent"></div>
+  </dialog>
+
+  <script>
+    const formulaSets = {
+      physics: [
+        { id: "speed", title: "Kelajuan", topic: "Gerak", formula: "v = s / t", description: "Seberapa jauh benda bergerak tiap satuan waktu?", fields: [{ key: "distance", label: "Jarak (s)", unit: "m" }, { key: "time", label: "Waktu (t)", unit: "s" }], answer: "Kelajuan", unit: "m/s", calculate: (v) => v.distance / v.time },
+        { id: "distance", title: "Jarak tempuh", topic: "Gerak", formula: "s = v × t", description: "Hitung jarak dari kelajuan dan waktu.", fields: [{ key: "speed", label: "Kelajuan (v)", unit: "m/s" }, { key: "time", label: "Waktu (t)", unit: "s" }], answer: "Jarak", unit: "m", calculate: (v) => v.speed * v.time },
+        { id: "acceleration", title: "Percepatan", topic: "Gerak", formula: "a = (v − v₀) / t", description: "Perubahan kelajuan setiap satuan waktu.", fields: [{ key: "finalSpeed", label: "Kelajuan akhir (v)", unit: "m/s" }, { key: "initialSpeed", label: "Kelajuan awal (v₀)", unit: "m/s" }, { key: "time", label: "Waktu (t)", unit: "s" }], answer: "Percepatan", unit: "m/s²", calculate: (v) => (v.finalSpeed - v.initialSpeed) / v.time },
+        { id: "force", title: "Hukum II Newton", topic: "Gaya & energi", formula: "F = m × a", description: "Gaya yang bekerja pada benda bermassa.", fields: [{ key: "mass", label: "Massa (m)", unit: "kg" }, { key: "acceleration", label: "Percepatan (a)", unit: "m/s²" }], answer: "Gaya", unit: "N", calculate: (v) => v.mass * v.acceleration },
+        { id: "weight", title: "Gaya berat", topic: "Gaya & energi", formula: "w = m × g", description: "Gaya gravitasi yang bekerja pada suatu benda.", fields: [{ key: "mass", label: "Massa (m)", unit: "kg" }, { key: "gravity", label: "Gravitasi (g)", unit: "m/s² · Bumi ≈ 9,8" }], answer: "Berat", unit: "N", calculate: (v) => v.mass * v.gravity },
+        { id: "kinetic", title: "Energi kinetik", topic: "Gaya & energi", formula: "Eₖ = ½ × m × v²", description: "Energi yang dimiliki benda karena bergerak.", fields: [{ key: "mass", label: "Massa (m)", unit: "kg" }, { key: "speed", label: "Kelajuan (v)", unit: "m/s" }], answer: "Energi kinetik", unit: "J", calculate: (v) => 0.5 * v.mass * v.speed ** 2 },
+        { id: "potential", title: "Energi potensial", topic: "Gaya & energi", formula: "Eₚ = m × g × h", description: "Energi karena posisi atau ketinggian benda.", fields: [{ key: "mass", label: "Massa (m)", unit: "kg" }, { key: "gravity", label: "Gravitasi (g)", unit: "m/s² · Bumi ≈ 9,8" }, { key: "height", label: "Ketinggian (h)", unit: "m" }], answer: "Energi potensial", unit: "J", calculate: (v) => v.mass * v.gravity * v.height },
+        { id: "work", title: "Usaha", topic: "Gaya & energi", formula: "W = F × s", description: "Energi yang dipindahkan oleh gaya sepanjang jarak.", fields: [{ key: "force", label: "Gaya (F)", unit: "N" }, { key: "distance", label: "Perpindahan (s)", unit: "m" }], answer: "Usaha", unit: "J", calculate: (v) => v.force * v.distance },
+        { id: "ohm", title: "Hukum Ohm", topic: "Listrik", formula: "V = I × R", description: "Hubungan tegangan, arus, dan hambatan listrik.", fields: [{ key: "current", label: "Arus (I)", unit: "A" }, { key: "resistance", label: "Hambatan (R)", unit: "Ω" }], answer: "Tegangan", unit: "V", calculate: (v) => v.current * v.resistance },
+        { id: "electric-power", title: "Daya listrik", topic: "Listrik", formula: "P = V × I", description: "Laju pemakaian energi pada rangkaian listrik.", fields: [{ key: "voltage", label: "Tegangan (V)", unit: "V" }, { key: "current", label: "Arus (I)", unit: "A" }], answer: "Daya", unit: "W", calculate: (v) => v.voltage * v.current },
+        { id: "density", title: "Massa jenis", topic: "Fluida & kalor", formula: "ρ = m / V", description: "Massa yang terdapat dalam setiap satuan volume.", fields: [{ key: "mass", label: "Massa (m)", unit: "kg" }, { key: "volume", label: "Volume (V)", unit: "m³" }], answer: "Massa jenis", unit: "kg/m³", calculate: (v) => v.mass / v.volume },
+        { id: "pressure", title: "Tekanan", topic: "Fluida & kalor", formula: "p = F / A", description: "Besar gaya yang bekerja pada tiap luas bidang.", fields: [{ key: "force", label: "Gaya (F)", unit: "N" }, { key: "area", label: "Luas bidang (A)", unit: "m²" }], answer: "Tekanan", unit: "Pa", calculate: (v) => v.force / v.area },
+        { id: "heat", title: "Kalor", topic: "Fluida & kalor", formula: "Q = m × c × ΔT", description: "Energi panas untuk mengubah suhu suatu zat.", fields: [{ key: "mass", label: "Massa (m)", unit: "kg" }, { key: "heatCapacity", label: "Kalor jenis (c)", unit: "J/(kg·°C)" }, { key: "temperatureChange", label: "Perubahan suhu (ΔT)", unit: "°C" }], answer: "Kalor", unit: "J", calculate: (v) => v.mass * v.heatCapacity * v.temperatureChange },
+      ],
+      chemistry: [
+        { id: "moles", title: "Jumlah mol", topic: "Mol & massa", formula: "n = m / Mᵣ", description: "Mengubah massa zat menjadi jumlah mol.", fields: [{ key: "mass", label: "Massa zat (m)", unit: "g" }, { key: "molarMass", label: "Massa molar (Mᵣ)", unit: "g/mol" }], answer: "Jumlah mol", unit: "mol", calculate: (v) => v.mass / v.molarMass },
+        { id: "molarity", title: "Molaritas", topic: "Larutan", formula: "M = n / V", description: "Konsentrasi larutan dalam mol per liter.", fields: [{ key: "moles", label: "Jumlah mol (n)", unit: "mol" }, { key: "volume", label: "Volume larutan (V)", unit: "L" }], answer: "Molaritas", unit: "mol/L", calculate: (v) => v.moles / v.volume },
+        { id: "mass-percent", title: "Kadar massa", topic: "Larutan", formula: "% massa = (m zat / m larutan) × 100%", description: "Persentase massa zat terlarut dalam larutan.", fields: [{ key: "soluteMass", label: "Massa zat terlarut", unit: "g" }, { key: "solutionMass", label: "Massa larutan", unit: "g" }], answer: "Kadar massa", unit: "%", calculate: (v) => (v.soluteMass / v.solutionMass) * 100 },
+        { id: "ph", title: "Derajat keasaman", topic: "Asam & basa", formula: "pH = −log₁₀[H⁺]", description: "Mengukur tingkat keasaman dari konsentrasi ion H⁺.", fields: [{ key: "hydrogen", label: "Konsentrasi ion [H⁺]", unit: "mol/L · harus > 0" }], answer: "pH", unit: "", calculate: (v) => -Math.log10(v.hydrogen) },
+        { id: "dilution", title: "Pengenceran larutan", topic: "Larutan", formula: "M₁ × V₁ = M₂ × V₂", description: "Menghitung konsentrasi akhir setelah larutan diencerkan.", fields: [{ key: "initialConcentration", label: "Konsentrasi awal (M₁)", unit: "mol/L" }, { key: "initialVolume", label: "Volume awal (V₁)", unit: "mL" }, { key: "finalVolume", label: "Volume akhir (V₂)", unit: "mL" }], answer: "Konsentrasi akhir (M₂)", unit: "mol/L", calculate: (v) => (v.initialConcentration * v.initialVolume) / v.finalVolume },
+        { id: "ideal-gas", title: "Gas ideal", topic: "Gas", formula: "P × V = n × R × T", description: "Hubungan tekanan, volume, mol, dan suhu gas.", fields: [{ key: "pressure", label: "Tekanan (P)", unit: "Pa" }, { key: "volume", label: "Volume (V)", unit: "m³" }, { key: "gasConstant", label: "Konstanta gas (R)", unit: "8,314 J/(mol·K)" }, { key: "temperature", label: "Suhu (T)", unit: "K" }], answer: "Jumlah mol (n)", unit: "mol", calculate: (v) => (v.pressure * v.volume) / (v.gasConstant * v.temperature) },
+        { id: "particles", title: "Jumlah partikel", topic: "Mol & massa", formula: "N = n × Nₐ", description: "Menghitung partikel dari jumlah mol zat.", fields: [{ key: "moles", label: "Jumlah mol (n)", unit: "mol" }, { key: "avogadro", label: "Bilangan Avogadro (Nₐ)", unit: "6,022 × 10²³ partikel/mol" }], answer: "Jumlah partikel", unit: "partikel", calculate: (v) => v.moles * v.avogadro },
+        { id: "density-chem", title: "Massa jenis zat", topic: "Mol & massa", formula: "ρ = m / V", description: "Massa zat yang menempati suatu volume.", fields: [{ key: "mass", label: "Massa (m)", unit: "g" }, { key: "volume", label: "Volume (V)", unit: "mL" }], answer: "Massa jenis", unit: "g/mL", calculate: (v) => v.mass / v.volume },
+      ],
+    };
+
+    const quizQuestions = {
+      physics: [
+        { question: "Apa satuan SI untuk gaya?", options: ["Joule (J)", "Newton (N)", "Watt (W)"], answer: 1, note: "Gaya diukur dalam newton (N)." },
+        { question: "Jika jarak 100 m ditempuh dalam 20 s, berapa kelajuannya?", options: ["5 m/s", "20 m/s", "80 m/s"], answer: 0, note: "Kelajuan = jarak ÷ waktu = 100 ÷ 20 = 5 m/s." },
+        { question: "Energi yang dimiliki benda karena gerak disebut…", options: ["Energi potensial", "Energi kinetik", "Energi kimia"], answer: 1, note: "Energi kinetik bergantung pada massa dan kelajuan benda." },
+        { question: "Apa satuan SI untuk tekanan?", options: ["Pascal (Pa)", "Ampere (A)", "Kilogram (kg)"], answer: 0, note: "Tekanan diukur dalam pascal (Pa)." },
+      ],
+      chemistry: [
+        { question: "Berapa pH larutan netral pada suhu sekitar 25 °C?", options: ["0", "7", "14"], answer: 1, note: "Larutan netral memiliki pH sekitar 7 pada 25 °C." },
+        { question: "Apa satuan jumlah zat dalam SI?", options: ["Mol (mol)", "Liter (L)", "Gram (g)"], answer: 0, note: "Jumlah zat dinyatakan dalam mol." },
+        { question: "Jika 2 mol zat ada dalam 1 L larutan, berapa molaritasnya?", options: ["0,5 mol/L", "1 mol/L", "2 mol/L"], answer: 2, note: "Molaritas = jumlah mol ÷ volume = 2 ÷ 1 = 2 mol/L." },
+        { question: "Simbol untuk bilangan Avogadro yang umum digunakan adalah…", options: ["Nₐ", "Mᵣ", "pH"], answer: 0, note: "Bilangan Avogadro (Nₐ) sekitar 6,022 × 10²³ partikel/mol." },
+      ],
+    };
+
+    const subjectTabs = [...document.querySelectorAll(".subject-tab")];
+    const formulaGrid = document.querySelector("#formulaGrid");
+    const filterRow = document.querySelector("#filterRow");
+    const searchInput = document.querySelector("#searchInput");
+    const sectionTitle = document.querySelector("#sectionTitle");
+    const resultCount = document.querySelector("#resultCount");
+    const dialog = document.querySelector("#formulaDialog");
+    const dialogContent = document.querySelector("#dialogContent");
+    const state = { subject: "physics", topic: "Semua", favoritesOnly: false, query: "", favorites: new Set() };
+
+    try {
+      const savedFavorites = JSON.parse(localStorage.getItem("rumusruang-azri-favorites") || "[]");
+      if (Array.isArray(savedFavorites) && savedFavorites.every((id) => typeof id === "string")) {
+        state.favorites = new Set(savedFavorites);
+      }
+    } catch (error) {
+      console.warn("Daftar favorit tidak dapat dibaca dari penyimpanan browser.", error);
+    }
+
+    function currentFormulas() {
+      return formulaSets[state.subject];
+    }
+
+    function renderFilters() {
+      const topics = ["Semua", ...new Set(currentFormulas().map((item) => item.topic))];
+      if (!topics.includes(state.topic)) state.topic = "Semua";
+      filterRow.replaceChildren();
+      const label = document.createElement("span");
+      label.className = "filter-label";
+      label.textContent = "Topik:";
+      filterRow.append(label);
+      for (const topic of topics) {
+        const chip = document.createElement("button");
+        chip.type = "button";
+        chip.className = "filter-chip";
+        chip.textContent = topic;
+        chip.setAttribute("aria-pressed", String(state.topic === topic && !state.favoritesOnly));
+        chip.addEventListener("click", () => {
+          state.topic = topic;
+          state.favoritesOnly = false;
+          render();
+        });
+        filterRow.append(chip);
+      }
+      const favorites = document.createElement("button");
+      favorites.type = "button";
+      favorites.className = "filter-chip favorite-filter";
+      favorites.textContent = "★ Favorit";
+      favorites.setAttribute("aria-pressed", String(state.favoritesOnly));
+      favorites.addEventListener("click", () => {
+        state.favoritesOnly = !state.favoritesOnly;
+        if (state.favoritesOnly) state.topic = "Semua";
+        render();
+      });
+      filterRow.append(favorites);
+    }
+
+    function renderCards() {
+      const query = state.query.trim().toLocaleLowerCase("id");
+      const visible = currentFormulas().filter((item) => {
+        const matchesQuery = `${item.title} ${item.topic} ${item.formula} ${item.description}`.toLocaleLowerCase("id").includes(query);
+        return matchesQuery && (state.topic === "Semua" || item.topic === state.topic) && (!state.favoritesOnly || state.favorites.has(item.id));
+      });
+      resultCount.textContent = `${visible.length} rumus`;
+      formulaGrid.replaceChildren();
+      if (!visible.length) {
+        const empty = document.createElement("div");
+        empty.className = "empty-state";
+        empty.innerHTML = "<strong>Rumusnya belum ketemu.</strong>Coba kata kunci lain atau pilih topik yang berbeda, ya.";
+        formulaGrid.append(empty);
+        return;
+      }
+      for (const item of visible) {
+        const card = document.createElement("article");
+        card.className = "formula-card";
+        card.tabIndex = 0;
+        card.setAttribute("role", "button");
+        card.setAttribute("aria-label", `Buka kalkulator rumus ${item.title}: ${item.formula}`);
+        card.innerHTML = `
+          <div class="card-top">
+            <span class="topic-tag">${item.topic}</span>
+            <button class="favorite-button" type="button" aria-label="${state.favorites.has(item.id) ? "Hapus dari" : "Tambah ke"} favorit" aria-pressed="${state.favorites.has(item.id)}">${state.favorites.has(item.id) ? "★" : "☆"}</button>
+          </div>
+          <h3>${item.title}</h3>
+          <p class="card-description">${item.description}</p>
+          <div class="formula-display"><code>${item.formula}</code><span class="try-label">Hitung →</span></div>`;
+        card.addEventListener("click", (event) => {
+          if (!event.target.closest(".favorite-button")) openFormula(item);
+        });
+        card.addEventListener("keydown", (event) => {
+          if ((event.key === "Enter" || event.key === " ") && event.target === card) {
+            event.preventDefault();
+            openFormula(item);
+          }
+        });
+        card.querySelector(".favorite-button").addEventListener("click", (event) => {
+          event.stopPropagation();
+          if (state.favorites.has(item.id)) state.favorites.delete(item.id);
+          else state.favorites.add(item.id);
+          try {
+            localStorage.setItem("rumusruang-azri-favorites", JSON.stringify([...state.favorites]));
+          } catch (error) {
+            console.warn("Daftar favorit tidak dapat disimpan di browser.", error);
+          }
+          render();
+        });
+        formulaGrid.append(card);
+      }
+    }
+
+    function render() {
+      document.body.classList.toggle("chemistry", state.subject === "chemistry");
+      for (const tab of subjectTabs) tab.setAttribute("aria-pressed", String(tab.dataset.subject === state.subject));
+      sectionTitle.textContent = state.favoritesOnly ? "Rumus favorit Azri" : `Rumus ${state.subject === "physics" ? "fisika" : "kimia"} pilihan`;
+      renderFilters();
+      renderCards();
+    }
+
+    function openFormula(item) {
+      const isChemistry = state.subject === "chemistry";
+      dialogContent.innerHTML = `
+        <div class="dialog-top">
+          <div><span class="topic-tag">${item.topic}</span><h2 id="dialogTitle">${item.title}</h2></div>
+          <button class="dialog-close" type="button" aria-label="Tutup kalkulator">×</button>
+        </div>
+        <p class="dialog-description">${item.description}</p>
+        <div class="dialog-equation ${isChemistry ? "chem-equation" : ""}">${item.formula}</div>
+        <p class="calc-hint">Isi semua nilai untuk menghitung <strong>${item.answer}</strong>. Pastikan satuannya sesuai.</p>
+        <form id="calculatorForm">
+          <div class="calc-fields">
+            ${item.fields.map((field) => `<label class="calc-field">${field.label}<input class="calc-input" name="${field.key}" type="number" step="any" inputmode="decimal" placeholder="${field.unit}" required></label>`).join("")}
+          </div>
+          <button class="calc-button" type="submit">Hitung ${item.answer.toLocaleLowerCase("id")} ✨</button>
+        </form>
+        <div class="calc-result" id="calcResult" aria-live="polite">Hasil perhitunganmu akan muncul di sini.</div>`;
+      dialogContent.querySelector(".dialog-close").addEventListener("click", () => dialog.close());
+      dialogContent.querySelector("#calculatorForm").addEventListener("submit", (event) => {
+        event.preventDefault();
+        const formData = new FormData(event.currentTarget);
+        const values = Object.fromEntries(item.fields.map((field) => [field.key, Number(formData.get(field.key))]));
+        const result = dialogContent.querySelector("#calcResult");
+        if (Object.values(values).some((value) => !Number.isFinite(value))) {
+          result.classList.add("error");
+          result.textContent = "Masukkan angka yang valid pada semua kolom.";
+          return;
+        }
+        if ((item.id === "speed" || item.id === "acceleration") && values.time === 0
+          || ["moles", "molarity", "mass-percent", "dilution", "density", "density-chem"].includes(item.id) && item.fields.some((field) => ["volume", "molarMass", "solutionMass", "finalVolume"].includes(field.key) && values[field.key] === 0)
+          || item.id === "pressure" && values.area === 0
+          || item.id === "ph" && values.hydrogen <= 0
+          || item.id === "ideal-gas" && (values.temperature <= 0 || values.gasConstant === 0)) {
+          result.classList.add("error");
+          result.textContent = "Penyebut tidak boleh nol; konsentrasi H⁺ dan suhu harus lebih besar dari nol.";
+          return;
+        }
+        const answer = item.calculate(values);
+        if (!Number.isFinite(answer)) {
+          result.classList.add("error");
+          result.textContent = "Hasil tidak dapat dihitung. Periksa kembali nilai yang dimasukkan.";
+          return;
+        }
+        result.classList.remove("error");
+        const formatted = new Intl.NumberFormat("id-ID", { maximumSignificantDigits: 7 }).format(answer);
+        result.innerHTML = `<strong>${item.answer}: ${formatted}${item.unit ? ` ${item.unit}` : ""}</strong>Bagus, Azri! Kamu baru saja menerapkan rumusnya.`;
+      });
+      dialog.showModal();
+      dialogContent.querySelector("input").focus();
+    }
+
+    function renderQuiz() {
+      const quizArea = document.querySelector("#quizArea");
+      const questions = quizQuestions[state.subject];
+      const question = questions[Math.floor(Math.random() * questions.length)];
+      quizArea.innerHTML = `
+        <p class="quiz-question">${question.question}</p>
+        <div class="quiz-options">${question.options.map((option, index) => `<button class="quiz-option" type="button" data-answer="${index}">${option}</button>`).join("")}</div>
+        <p class="quiz-feedback" aria-live="polite"></p>
+        <button class="filter-chip" id="nextQuestion" type="button">Soal berikutnya ↻</button>`;
+      quizArea.querySelectorAll(".quiz-option").forEach((button) => {
+        button.addEventListener("click", () => {
+          const selected = Number(button.dataset.answer);
+          quizArea.querySelectorAll(".quiz-option").forEach((option) => {
+            option.disabled = true;
+            if (Number(option.dataset.answer) === question.answer) option.classList.add("correct");
+            else if (Number(option.dataset.answer) === selected) option.classList.add("incorrect");
+          });
+          quizArea.querySelector(".quiz-feedback").textContent = selected === question.answer ? `Betul! ${question.note}` : `Belum tepat. ${question.note}`;
+        });
+      });
+      quizArea.querySelector("#nextQuestion").addEventListener("click", renderQuiz);
+    }
+
+    subjectTabs.forEach((tab) => tab.addEventListener("click", () => {
+      state.subject = tab.dataset.subject;
+      state.topic = "Semua";
+      state.favoritesOnly = false;
+      render();
+    }));
+    searchInput.addEventListener("input", () => {
+      state.query = searchInput.value;
+      renderCards();
+    });
+    document.querySelector("#startQuiz").addEventListener("click", renderQuiz);
+    dialog.addEventListener("click", (event) => {
+      if (event.target === dialog) dialog.close();
+    });
+    render();
+  </script>
+</body>
+</html>
