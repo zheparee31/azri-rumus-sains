@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#f6f5f1">
+  <meta name="theme-color" content="#080d18">
   <meta name="description" content="Ruang belajar rumus fisika dan kimia interaktif untuk Azri.">
   <title>RumusRuang — Belajar bareng Azri</title>
   <style>
@@ -163,6 +163,114 @@
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; }
     }
+  :root {
+    color-scheme: dark;
+    --bg: #080d18;
+    --paper: #101a2a;
+    --ink: #f1f3f7;
+    --muted: #aab5c6;
+    --line: #29374c;
+    --green: #dfa84f;
+    --green-dark: #f2c875;
+    --green-soft: #30281d;
+    --violet: #bd7952;
+    --violet-soft: #35241f;
+    --yellow: #f0b958;
+    --shadow: 0 18px 50px #0008;
+  }
+  body {
+    background:
+      radial-gradient(ellipse at 8% 8%, #172b45 0, transparent 32rem),
+      radial-gradient(ellipse at 92% 20%, #39271d66 0, transparent 28rem),
+      var(--bg);
+  }
+  button:focus-visible, a:focus-visible, input:focus-visible { outline-color: var(--yellow); }
+  .topbar { border-color: #dca94b55; }
+  .brand-mark { color: #111724; background: var(--green); }
+  .hero { grid-template-columns: 1fr auto; }
+  h1 span, .brand span:last-child { color: var(--green-dark); }
+  .hero-portrait {
+    width: 250px;
+    margin: 0;
+    padding: 8px;
+    border: 1px solid #e0ad5a99;
+    border-radius: 24px;
+    background: linear-gradient(145deg, #202b3d, #111724);
+    box-shadow: 0 18px 50px #0009, 0 0 30px #d9953a24;
+    transform: rotate(2deg);
+  }
+  .hero-portrait img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 3 / 4;
+    border-radius: 17px;
+    object-fit: cover;
+    object-position: center 32%;
+  }
+  .hero-portrait figcaption {
+    padding: 11px 4px 4px;
+    color: var(--green-dark);
+    font-size: .68rem;
+    font-weight: 800;
+    letter-spacing: .12em;
+    text-align: center;
+    text-transform: uppercase;
+  }
+  .workspace, .study-card { border-color: #334158; }
+  .subject-tabs, .search, .filter-chip, .formula-card, .quiz-option, .dialog-close, .calc-input {
+    color: var(--ink);
+    background-color: #0c1524;
+  }
+  .subject-tab[aria-pressed="true"] { color: #111724; }
+  .subject-tab[data-subject="chemistry"][aria-pressed="true"] { color: #111724; }
+  .search-icon, .filter-label, .try-label { color: var(--muted); }
+  .filter-chip { border-color: var(--line); }
+  .filter-chip:hover { border-color: #d8a54e; }
+  .filter-chip[aria-pressed="true"], .filter-chip.favorite-filter[aria-pressed="true"] {
+    border-color: #d8a54e;
+    color: var(--green-dark);
+    background: #30281d;
+  }
+  .formula-card:hover, .chemistry .formula-card:hover {
+    border-color: #d8a54e;
+    box-shadow: 0 12px 28px #0007, 0 0 20px #d8a54e14;
+  }
+  .topic-tag, .chemistry .topic-tag {
+    color: var(--green-dark);
+    background: var(--green-soft);
+  }
+  .formula-display code, .chemistry .formula-display code { color: var(--green-dark); }
+  .formula-display { border-color: #344158; }
+  .favorite-button:hover, .favorite-button[aria-pressed="true"] {
+    color: #ffd77f;
+    background: #3a2d1c;
+  }
+  .quiz-option { border-color: var(--line); }
+  .quiz-option:hover:not(:disabled) { border-color: var(--green); color: var(--green-dark); }
+  .quiz-option.correct { border-color: #658b70; color: #b9e1bf; background: #182d27; }
+  .quiz-option.incorrect { border-color: #9f6558; color: #f0b9a9; background: #321f20; }
+  .quiz-feedback { color: var(--green-dark) !important; }
+  .note-card {
+    border-color: #70543b;
+    background: linear-gradient(135deg, #202a3c, #151c2a 80%);
+  }
+  .note-card .note-icon { color: #f2c875; background: #3a3024; }
+  .note-card p { color: #b8c0ce; }
+  dialog { border-color: #43506a; box-shadow: 0 25px 90px #000d; }
+  dialog::backdrop { background: #030710d9; }
+  .dialog-close { border-color: var(--line); }
+  .chem-equation { color: #f0b98f; }
+  .calc-field { color: #c0c8d4; }
+  .calc-input { border-color: #344158; }
+  .calc-button { color: #111724; }
+  .chemistry .calc-button { color: #111724; }
+  .calc-result { color: #f2c875; background: #1b2a29; }
+  .calc-result.error { border-color: #895346; color: #ffc4b0; background: #321f20; }
+  .empty-state { border-color: #43506a; }
+  @media (max-width: 560px) {
+    .hero { grid-template-columns: 1fr; }
+    .hero-portrait { width: min(100%, 250px); justify-self: center; transform: none; }
+  }
   </style>
 </head>
 <body>
@@ -179,10 +287,10 @@
           <h1 id="welcome-title">Hai, Azri!<br>Yuk bikin rumus jadi <span>seru.</span></h1>
           <p class="hero-copy">Pilih rumus yang ingin kamu jelajahi, masukkan angka, lalu lihat hasilnya. Fisika dan kimia jadi terasa lebih dekat—satu klik dalam satu waktu.</p>
         </div>
-        <div class="hero-sticker" aria-label="Belajar santai, paham pelan-pelan">
-          <strong>Azri × sains</strong>
-          <span>Belajar santai ✿</span>
-        </div>
+        <figure class="hero-portrait">
+          <img src="azri-portrait.png" alt="Azri dengan kostum fantasi bertanduk sambil memegang sepasang sepatu">
+          <figcaption>Azri × sains · belajar santai</figcaption>
+        </figure>
       </section>
 
       <section class="workspace" aria-label="Jelajahi kumpulan rumus">
